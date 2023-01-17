@@ -1,10 +1,7 @@
 #!/bin/bash
 
 # ディレクトリであれば真
-if [ -d "/var/lib/mysql/$MYSQL_DATABASE" ]
-then 
-	echo "Database already exists"
-else
+if [ ! -d "/var/lib/mysql/$MYSQL_DATABASE" ]; then 
 	mysql_install_db
 	mysqld -u mysql --bootstrap << EOF
 		CREATE DATABASE IF NOT EXISTS $MYSQL_DATABASE;
@@ -14,3 +11,5 @@ else
 		FLUSH PRIVILEGES;
 EOF
 fi
+
+mysqld_safe

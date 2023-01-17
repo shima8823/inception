@@ -9,14 +9,14 @@ RUN mkdir -p /var/run/mysqld \
 && chmod 777 /var/run/mysqld
 
 
-COPY ./tools/start.sh /usr/local/bin/
+COPY ./tools/docker-entrypoint.sh /usr/local/bin/
 COPY ./conf/mariadb.conf /etc/mysql/mariadb.conf.d/50-server.cnf
-RUN chmod +x /usr/local/bin/start.sh
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
 EXPOSE 3306
 
 # CMD tail -f /dev/null
-ENTRYPOINT ["/usr/local/bin/start.sh"]
+ENTRYPOINT ["docker-entrypoint.sh"]
 
 # Dockerfileにおいては、Dockerコンテナ内でmysqldデーモンを起動し、クライアンアントからの接続を受け付け、データベースへのアクセスを提供するために使用されます。
-CMD ["mysqld_safe"]
+# CMD ["mysqld_safe"]
