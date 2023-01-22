@@ -16,7 +16,7 @@ services:
     env_file:
       - .env
     volumes:
-      - web:/var/www/html
+      - html:/var/www/html
     depends_on:
       - wordpress
   wordpress:
@@ -31,7 +31,7 @@ services:
     env_file:
       - .env
     volumes:
-      - web:/var/www/html
+      - html:/var/www/html
     depends_on:
       - mariadb
   mariadb:
@@ -53,13 +53,13 @@ volumes:
     driver: local
     driver_opts:
       type: none
-      device: ${VOLUME_DIR}/mariadb/database
+      device: ${VOLUME_DIR}/database
       o: bind
-  web:
+  html:
     driver: local
     driver_opts:
       type: none
-      device: ${VOLUME_DIR}/wordpress/web
+      device: ${VOLUME_DIR}/html
       o: bind
 
 networks:
