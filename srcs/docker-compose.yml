@@ -1,27 +1,68 @@
-version: '3.3'
+version: '3'
 services:
-  db:
-    image: mysql:5.7
-    volumes:
-      - db_data:/var/lib/mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: wordpress
-      MYSQL_DATABASE: wordpress
-      MYSQL_USER: wordpress
-      MYSQL_PASSWORD: wordpress
-
-  wordpress:
-    depends_on:
-      - db
-    image: wordpress:latest
+  nginx:
+    build:
+      context: ./requirements/nginx
+      args:
+        - "DOMAIN_NAME=${DOMAIN_NAME}"
+        - "CERTS_=${CERTS_}"
+    # image: nginx
+    container_name: nginx
     ports:
-      - "8000:80"
+      - "443:443"
+    restart: always
+    networks:
+      - net
+    env_file:
+      - .env
     volumes:
-      - ./wp-content:/var/www/html/wp-content
-    environment:
-      WORDPRESS_DB_HOST: db:3306
-      WORDPRESS_DB_USER: wordpress
-      WORDPRESS_DB_PASSWORD: wordpress
-      WORDPRESS_DB_NAME: wordpress
+      - web:/var/www/html
+    depends_on:
+      - wordpress
+  wordpress:
+    build: ./requirements/wordpress
+    # image: wordpress
+    container_name: wordpress
+    expose:
+      - "9000"
+    restart: always
+    networks:
+      - net
+    env_file:
+      - .env
+    volumes:
+      - web:/var/www/html
+    depends_on:
+      - mariadb
+  mariadb:
+    build: ./requirements/mariadb
+    # image: mariadb
+    container_name: mariadb
+    expose:
+      - "3306"
+    restart: always
+    networks:
+      - net
+    env_file:
+      - .env
+    volumes:
+      - database:/var/lib/mysql
+
+# type filesystem???
 volumes:
-    db_data:
+  database:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${VOLUME_DIR}/mariadb/database
+      o: bind
+  web:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${VOLUME_DIR}/wordpress/web
+      o: bind
+
+networks:
+  net:
+    driver: bridge
