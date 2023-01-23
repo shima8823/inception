@@ -6,7 +6,7 @@ services:
       args:
         - "DOMAIN_NAME=${DOMAIN_NAME}"
         - "CERTS_=${CERTS_}"
-    # image: nginx
+    image: nginx
     container_name: nginx
     ports:
       - "443:443"
@@ -21,7 +21,7 @@ services:
       - wordpress
   wordpress:
     build: ./requirements/wordpress
-    # image: wordpress
+    image: wordpress
     container_name: wordpress
     expose:
       - "9000"
@@ -36,7 +36,7 @@ services:
       - mariadb
   mariadb:
     build: ./requirements/mariadb
-    # image: mariadb
+    image: mariadb
     container_name: mariadb
     expose:
       - "3306"

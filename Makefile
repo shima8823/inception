@@ -2,7 +2,7 @@ include srcs/.env
 
 .PHONY: all
 all: set_domain set_volume_dir
-	docker-compose -f srcs/docker-compose.yml up -d
+	docker compose -f srcs/docker-compose.yml up --build -d
 
 .PHONY: exec_nginx
 exec_nginx:
@@ -27,9 +27,11 @@ set_domain:
 .PHONY: set_volume_dir
 set_volume_dir:
 	@if [ ! -d ${VOLUME_DIR}/html ] ; then \
+		echo "make directory ${VOLUME_DIR}/html" \
 		sudo mkdir -p ${VOLUME_DIR}/html; \
 	fi
 	@if [ ! -d ${VOLUME_DIR}/database ] ; then \
+		echo "make directory ${VOLUME_DIR}/database" \
 		sudo mkdir -p ${VOLUME_DIR}/database; \
 	fi
 # ------------------------------------------------ #
@@ -37,13 +39,12 @@ set_volume_dir:
 # -------------------- delete etc -------------------- #
 .PHONY: clean
 clean:
-	docker-compose -f srcs/docker-compose.yml down -v --rmi all
-	sudo rm -rf ${VOLUME_DIR}/database/*
-	sudo rm -rf ${VOLUME_DIR}/html/*
+	docker compose -f srcs/docker-compose.yml down -v --rmi all
+	sudo rm -rf ${VOLUME_DIR}
 
 .PHONY: clean_image
 clean_image:
-	docker-compose -f srcs/docker-compose.yml down --rmi all
+	docker compose -f srcs/docker-compose.yml down --rmi all
 
 # ---------------------------------------------------- #
 
