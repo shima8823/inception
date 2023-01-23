@@ -19,9 +19,9 @@ exec_wordpress:
 # -------------------- set up -------------------- #
 .PHONY: set_domain
 set_domain:
-	@if ! grep "127.0.0.1\t${DOMAIN_NAME}" /etc/hosts > /dev/null; then \
+	@if ! grep "127.0.0.1	${DOMAIN_NAME}" /etc/hosts > /dev/null; then \
 		echo "add domain in /etc/hosts"; \
-		echo "127.0.0.1\t${DOMAIN_NAME}" | sudo tee -a /etc/hosts; \
+		echo "127.0.0.1	${DOMAIN_NAME}" | sudo tee -a /etc/hosts; \
 	fi
 
 .PHONY: set_volume_dir
@@ -38,8 +38,8 @@ set_volume_dir:
 .PHONY: clean
 clean:
 	docker-compose -f srcs/docker-compose.yml down -v --rmi all
-	rm -rf ${VOLUME_DIR}/database/*
-	rm -rf ${VOLUME_DIR}/html/*
+	sudo rm -rf ${VOLUME_DIR}/database/*
+	sudo rm -rf ${VOLUME_DIR}/html/*
 
 .PHONY: clean_image
 clean_image:
