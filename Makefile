@@ -27,11 +27,11 @@ set_domain:
 .PHONY: set_volume_dir
 set_volume_dir:
 	@if [ ! -d ${VOLUME_DIR}/html ] ; then \
-		echo "make directory ${VOLUME_DIR}/html" \
+		echo "make directory ${VOLUME_DIR}/html"; \
 		sudo mkdir -p ${VOLUME_DIR}/html; \
 	fi
 	@if [ ! -d ${VOLUME_DIR}/database ] ; then \
-		echo "make directory ${VOLUME_DIR}/database" \
+		echo "make directory ${VOLUME_DIR}/database"; \
 		sudo mkdir -p ${VOLUME_DIR}/database; \
 	fi
 # ------------------------------------------------ #
