@@ -7,7 +7,7 @@ dockerでwordpressを構築する
 
 **Linux only**
 ```
-git clone https://github.com/shima8823/cub3D.git
+git clone https://github.com/shima8823/inception.git
 cd inception
 make
 docker ps
